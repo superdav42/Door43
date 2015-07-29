@@ -4,8 +4,6 @@
  * Class cache_use_test
  *
  * Tests if caching can actually be used
- *
- * @todo tests marked as flaky until Ticket #694 has been fixed
  */
 class cache_use_test extends DokuWikiTest {
     /** @var cache_renderer $cache */
@@ -30,11 +28,18 @@ class cache_use_test extends DokuWikiTest {
         touch($this->cache->cache, $time);
     }
 
+    function test_use() {
+        $this->markTestSkipped('Disabled until Ticket #694 has been fixed');
+        return;
+
+        $this->assertTrue($this->cache->useCache());
+    }
+
     /**
      * In all the following tests the cache should not be usable
      * as such, they are meaningless if test_use didn't pass.
      *
-     * @group flaky
+     * @depends test_use
      */
     function test_purge() {
         /* @var Input $INPUT */
@@ -46,7 +51,7 @@ class cache_use_test extends DokuWikiTest {
     }
 
     /**
-     * @group flaky
+     * @depends test_use
      */
     function test_filedependency() {
         // give the dependent src file the same mtime as the cache
@@ -55,7 +60,7 @@ class cache_use_test extends DokuWikiTest {
     }
 
     /**
-     * @group flaky
+     * @depends test_use
      */
     function test_age() {
         // need to age both our source file & the cache
@@ -69,7 +74,7 @@ class cache_use_test extends DokuWikiTest {
     }
 
     /**
-     * @group flaky
+     * @depends test_use
      */
     function test_confnocaching() {
         global $conf;
